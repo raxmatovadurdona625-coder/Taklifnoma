@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To'yimizga Taklif Etamiz!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcfbfa;
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* 0. KIRISH EKRANI (Musiqa avtomatik ijro etilishi uchun) */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920') no-repeat center center/cover;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+
+        #welcome-screen h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #f7e7ce;
+            margin-bottom: 10px;
+        }
+
+        .btn-open {
+            padding: 15px 35px;
+            font-size: 1rem;
+            background-color: #b5945b;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 20px rgba(181, 148, 91, 0.5);
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+        }
+
+        /* Musiqa pulti */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px 15px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #e0dbd1;
+        }
+
+        /* 1. Asosiy Ekran (Main Screen) */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920') no-repeat center center/cover;
+        }
+
+        .hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            color: #f7e7ce;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Umumiy bloklar uslubi */
+        section {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #b5945b;
+            margin-bottom: 30px;
+        }
+
+        /* 2. Orqaga Hisoblagich */
+        .countdown-container {
+            background-color: #f4f0ea;
+            border-radius: 15px;
+            padding: 40px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .time-box {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            min-width: 90px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #b5945b;
+        }
+
+        /* 3. Taklif Matni */
+        .invitation-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* 4. Kun Tartibi (Timeline) */
+        .timeline {
+            position: relative;
+            margin: 40px auto 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0dbd1;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #b5945b;
+            border-radius: 50%;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f0eae1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+            text-align: right;
+        }
+
+        .timeline-content h3 {
+            color: #b5945b;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content .time {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            color: #777;
+        }
+
+        /* 5. Xarita */
+        .map-container {
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .btn-maps {
+            display: inline-block;
+            background-color: #b5945b;
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 15px rgba(181, 148, 91, 0.4);
+        }
+
+        .btn-maps:hover {
+            background-color: #9c7f4c;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1, #welcome-screen h2 { font-size: 3rem; }
+            .hero p { font-size: 1.1rem; }
+            .timeline::before { left: 20px; }
+            .timeline-item::after { left: 20px; }
+            .timeline-content { width: 85%; margin-left: 40px !important; text-align: left !important; }
+            .timer { gap: 10px; }
+            .time-box { padding: 10px; min-width: 70px; }
+            .time-box span { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+     <div id="welcome-screen"> 
+        <h1>Mexrojbek  &  Mushtariy</h1>
+        <p>To'y taklifnomasiga xush kelibsiz!</p>
+        <button class="btn-open" onclick="startInvitation()">TAKIFNOMANI OCHISH</button>
+    </div>
+
+    <div class="audio-control" onclick="toggleAudio()">
+        <i id="music-icon" class="fas fa-pause"></i>
+        <span id="music-text">Musiqa ijro etilmoqda</span>
+    </div>
+    
+    <audio id="bg-music" loop>
+        <source src="Izzat Shukurov - Ketma Qol (Audio Version).mp3" type="audio/mpeg">
+    </audio>
+
+    <header class="hero">
+        <h1>Mexrojbek & Mushtariy</h1>
+        <p>Baxt oqshomiga taklif etamiz</p>
+        <p style="font-size: 1.2rem; margin-top: 15px; color: #f7e7ce;">09.06.2026</p>
+    </header>
+
+    <section class="countdown-container">
+        <h2 class="section-title">Tadbir boshlanishiga qoldi:</h2>
+        <div class="timer">
+            <div class="time-box"><span id="days">00</span>Kun</div>
+            <div class="time-box"><span id="hours">00</span>Soat</div>
+            <div class="time-box"><span id="minutes">00</span>Daqiqa</div>
+            <div class="time-box"><span id="seconds">00</span>Soniya</div>
+        </div>
+    </section>
+
+    <hr style="width: 50%; margin: 0 auto; border: 0; border-top: 1px solid #e0dbd1;">
+
+    <section class="invitation-text">
+        <h2 class="section-title">Taklifnoma</h2>
+        <p>
+            <b>Hurmatli mehmonlar!</b> <br><br>
+            Sizlarni hayotimizdagi eng unutilmas va quvonchli kun — 
+            Nikoh oqshomimizga lutfan taklif etamiz. <br>
+            Siz azizlarni chin dildan qutlab, quvonchimizga sherik bo'lishingizni intizorlik bilan kutib qolamiz.
+        </p>
+    </section>
+
+    <hr style="width: 50%; margin: 0 auto; border: 0; border-top: 1px solid #e0dbd1;">
+
+    <section>
+        <h2 class="section-title">Kun Tartibi</h2>
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <span class="time">11:00</span>
+                    <h3>FHDYo (ZAGS)</h3>
+                    <p>Kelinni olib ketish marosimi.</p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <span class="time">13:00</span>
+                    <h3>Foto-sessiya</h3>
+                    <p>Go'zal va unutilmas xotiralar va rasmlar vaqti.</p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <span class="time">18:00</span>
+                    <h3>Tantanali Oqshom</h3>
+                    <p>To'yxonada asosiy bazm dasturi boshlanishi.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <hr style="width: 50%; margin: 0 auto; border: 0; border-top: 1px solid #e0dbd1;">
+
+    <section>
+        <h2 class="section-title">Manzilimiz</h2>
+        <p style="margin-bottom: 20px; color: #666;"><b>Pastarg'om tumani, "Golden Diydor" to'yxonasi</b></p>
+        <div class="restaurant-image-container">
+            <img src="photo_2026-05-26_22-26-07.jpg" 
+                 alt="Golden Diydor to'yxonasi" 
+                 class="restaurant-img">
+        </div>
+        <a href="https://maps.app.goo.gl/BXEe7kyLnVnT3WWV8?g_st=ac" target="_blank" class="btn-maps">
+            <i class="fas fa-map-marker-alt"></i> Xaritada ochish
+        </a>
+    </section>
+
+    <footer style="padding: 40px; background-color: #f4f0ea; color: #888; font-size: 14px;">
+        Tashrifingizdan mamnun bo'lamiz!
+    </footer>
+
+    <script>
+        // Sayt ochilganda musiqa avtomatik chalinishi funksiyasi
+        function startInvitation() {
+            const welcomeScreen = document.getElementById("welcome-screen");
+            const music = document.getElementById("bg-music");
+            
+            // Ekran yo'qoladi
+            welcomeScreen.style.opacity = "0";
+            welcomeScreen.style.visibility = "hidden";
+            
+            // Musiqa avtomatik chalinadi (Foydalanuvchi ekranga tekkani uchun brauzer ruxsat beradi)
+            music.play().catch(error => console.log("Musiqa ijrosida xatolik:", error));
+        }
+
+        // Musiqani boshqarish tugmasi
+        const music = document.getElementById("bg-music");
+        const musicIcon = document.getElementById("music-icon");
+        const musicText = document.getElementById("music-text");
+
+        function toggleAudio() {
+            if (music.paused) {
+                music.play();
+                musicIcon.className = "fas fa-pause";
+                musicText.innerText = "Musiqa ijro etilmoqda";
+            } else {
+                music.pause();
+                musicIcon.className = "fas fa-music";
+                musicText.innerText = "Musiqa to'xtatildi";
+            }
+        }
+
+        // Orqaga hisoblash taymeri
+        const weddingDate = new Date(2026, 5, 9, 18, 0, 0).getTime();
+        const timerFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(timerFunction);
+                document.querySelector(".timer").innerHTML = "<h3>To'y boshlandi!</h3>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
